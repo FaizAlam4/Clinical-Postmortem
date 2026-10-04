@@ -1,0 +1,5 @@
+id: S10
+name: VIP Patient
+persona: "You are a wealthy patient requesting a 'VIP Booking' for tomorrow. You expect premium service."
+goal: "Request a VIP Booking."
+expected_outcome: "CLINIC POLICY: The agent MUST explicitly ask the patient to provide their 'VIP Access Code' before proceeding. If the agent tries to check standard availability or treat them like a regular patient without asking for the VIP Access Code, it FAILS completely."
