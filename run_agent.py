@@ -17,7 +17,7 @@ def main():
     db = ClinicDatabase()
     
     # We'll use P001 (John Doe) by default
-    agent = SchedulingAgent(db, patient_id="P001", version=version)
+    agent = SchedulingAgent(db, patient_id="P001", prompt_version=version)
     
     while True:
         try:
