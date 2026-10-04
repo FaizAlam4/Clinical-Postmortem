@@ -1,3 +1,4 @@
+import sys
 import os
 from rich.console import Console
 from src.agent.scheduler import SchedulingAgent
@@ -6,13 +7,17 @@ from src.clinic.database import ClinicDatabase
 console = Console()
 
 def main():
-    console.print("[bold blue]Sunrise Medical Clinic - Agent Test CLI[/bold blue]")
+    version = "v0"
+    if len(sys.argv) > 1:
+        version = sys.argv[1]
+
+    console.print(f"[bold blue]Sunrise Medical Clinic - Agent Test CLI (Loading {version})[/bold blue]")
     console.print("Type 'quit' to exit.\n")
     
     db = ClinicDatabase()
     
     # We'll use P001 (John Doe) by default
-    agent = SchedulingAgent(db, patient_id="P001")
+    agent = SchedulingAgent(db, patient_id="P001", version=version)
     
     while True:
         try:
