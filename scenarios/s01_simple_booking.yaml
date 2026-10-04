@@ -1,0 +1,24 @@
+id: S1
+name: Simple appointment booking
+difficulty: easy
+category: happy_path
+patient_persona:
+  name: John
+  patient_id: P001
+  personality: Friendly
+  goal: Book a general checkup
+  opener: Hi, I'd like to book a general checkup sometime this week if possible.
+expected_outcomes:
+  must:
+  - Agent checks availability using get_available_slots
+  - Agent calls book_appointment
+  must_not:
+  - Agent books without confirming with patient
+  - Agent provides medical advice
+functional_checks:
+- type: tool_called
+  tool: get_available_slots
+- type: tool_called
+  tool: book_appointment
+- type: appointment_created
+  patient_id: P001

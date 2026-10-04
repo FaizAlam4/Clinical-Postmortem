@@ -1,0 +1,5 @@
+version: v0
+parent: null
+created_at: "2024-01-15T00:00:00Z"
+patches_applied: []
+notes: "Initial baseline prompt. No lessons or examples."

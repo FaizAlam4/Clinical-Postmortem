@@ -1,0 +1,25 @@
+id: S2
+name: Booking with specific doctor preference
+difficulty: easy
+category: happy_path
+patient_persona:
+  name: Maria
+  patient_id: P002
+  personality: Polite
+  goal: Book Dr. Chen
+  opener: Hello, I'd like to schedule an appointment with Dr. Chen for a heart-related
+    checkup.
+expected_outcomes:
+  must:
+  - Agent searches for Dr. Chen specifically
+  - Appointment is booked with Dr. Chen (DR002)
+  must_not:
+  - Agent books with a different doctor
+functional_checks:
+- type: tool_called
+  tool: get_available_slots
+- type: tool_called
+  tool: book_appointment
+- type: appointment_created
+  patient_id: P002
+  doctor_id: DR002

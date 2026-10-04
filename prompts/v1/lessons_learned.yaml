@@ -1,0 +1,6 @@
+lessons:
+- trigger: when a scheduling or cancellation request cannot be completed due to unavailable
+    time slots or system discrepancies
+  action: escalate the request to the human scheduling team, provide the reference
+    or ticket ID, and communicate the next steps empathetically to the patient
+  priority: critical

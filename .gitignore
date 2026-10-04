@@ -1,0 +1,20 @@
+# Environment
+.env
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+
+# Results (keep structure, ignore data)
+results/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

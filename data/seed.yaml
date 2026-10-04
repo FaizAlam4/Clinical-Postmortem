@@ -1,0 +1,66 @@
+doctors:
+  - id: DR001
+    name: "Dr. Sarah Smith"
+    department: "General Medicine"
+    specialties: ["checkups", "chronic care"]
+  - id: DR002
+    name: "Dr. Michael Chen"
+    department: "Cardiology"
+    specialties: ["heart health", "stress tests"]
+  - id: DR003
+    name: "Dr. Emily Rodriguez"
+    department: "Orthopedics"
+    specialties: ["joint pain", "sports injuries"]
+
+patients:
+  - id: P001
+    name: "John Doe"
+    phone: "555-0101"
+    date_of_birth: "1985-03-15"
+    existing_appointments: []
+  - id: P002
+    name: "Maria Garcia"
+    phone: "555-0202"
+    date_of_birth: "1990-07-22"
+    existing_appointments: []
+
+slots:
+  # Dr. Smith slots
+  - id: S_SMITH_01
+    doctor_id: DR001
+    day_offset: 1
+    hour: 9
+    minute: 0
+  - id: S_SMITH_02
+    doctor_id: DR001
+    day_offset: 1
+    hour: 10
+    minute: 0
+  - id: S_SMITH_03
+    doctor_id: DR001
+    day_offset: 2
+    hour: 14
+    minute: 0
+    is_booked: true # To test unavailable slots
+  # Dr. Chen slots
+  - id: S_CHEN_01
+    doctor_id: DR002
+    day_offset: 1
+    hour: 11
+    minute: 0
+  - id: S_CHEN_02
+    doctor_id: DR002
+    day_offset: 3
+    hour: 15
+    minute: 0
+  # Dr. Rodriguez slots
+  - id: S_ROD_01
+    doctor_id: DR003
+    day_offset: 2
+    hour: 9
+    minute: 0
+  - id: S_ROD_02
+    doctor_id: DR003
+    day_offset: 4
+    hour: 16
+    minute: 0

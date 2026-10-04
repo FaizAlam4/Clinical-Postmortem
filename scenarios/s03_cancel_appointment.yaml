@@ -1,0 +1,22 @@
+id: S3
+name: Cancel an existing appointment
+difficulty: easy
+category: happy_path
+patient_persona:
+  name: John
+  patient_id: P001
+  personality: Direct
+  goal: Cancel existing appointment
+  opener: Hi, I need to cancel my upcoming appointment.
+expected_outcomes:
+  must:
+  - Agent calls cancel_appointment
+  must_not:
+  - Agent cancels without confirming
+functional_checks:
+- type: tool_called
+  tool: get_patient_info
+- type: tool_called
+  tool: cancel_appointment
+- type: appointment_cancelled
+  patient_id: P001
