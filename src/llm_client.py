@@ -16,34 +16,8 @@ _LAST_CALL_TIME = 0
 class LLMClient:
     def __init__(self):
         self.gemini_key = os.getenv("GEMINI_API_KEY")
-        self.groq_key = os.getenv("GROQ_API_KEY")
         self.providers = []
         
-        # PRIORITIZE GROQ TO AVOID GEMINI RATE LIMITS
-        if self.groq_key:
-            groq_url = "https://api.groq.com/openai/v1/chat/completions"
-            groq_headers = {"Authorization": f"Bearer {self.groq_key}", "Content-Type": "application/json"}
-            
-            # Using the models you specifically provided earlier
-            self.providers.append({
-                "name": "Groq GPT OSS 20B",
-                "url": groq_url,
-                "headers": groq_headers,
-                "model": "openai/gpt-oss-20b"
-            })
-            self.providers.append({
-                "name": "Groq GPT OSS 120B",
-                "url": groq_url,
-                "headers": groq_headers,
-                "model": "openai/gpt-oss-120b"
-            })
-            self.providers.append({
-                "name": "Groq Qwen 3.8 27B",
-                "url": groq_url,
-                "headers": groq_headers,
-                "model": "qwen/qwen3.8-27b"
-            })
-
         if self.gemini_key:
             self.providers.append({
                 "name": "Gemini 3.5 Flash Lite",
@@ -60,37 +34,6 @@ class LLMClient:
             
         if not self.providers:
             raise ValueError("No API keys found")
-
-    def _sanitize_messages(self, messages: list[dict]) -> list[dict]:
-        """
-        Gemini rejects payloads where two consecutive messages have the same role.
-        This merges consecutive same-role messages and ensures the conversation
-        doesn't end with an assistant turn before we send it.
-        """
-        if not messages:
-            return messages
-        
-        cleaned = [messages[0]]  # Always keep the system message
-        
-        for msg in messages[1:]:
-            role = msg.get("role")
-            # Tool messages are fine back-to-back
-            if role == "tool":
-                cleaned.append(msg)
-                continue
-            # If the previous non-tool message has the same role, merge content
-            prev = cleaned[-1]
-            if prev.get("role") == role and role in ("user", "assistant"):
-                prev_content = prev.get("content") or ""
-                new_content = msg.get("content") or ""
-                if prev_content and new_content:
-                    prev["content"] = prev_content + "\n" + new_content
-                elif new_content:
-                    prev["content"] = new_content
-            else:
-                cleaned.append(msg)
-        
-        return cleaned
 
     def chat(self, messages: list[dict], tools: list[dict] | None = None, temperature: float = 0.7) -> dict:
         global _LAST_CALL_TIME
