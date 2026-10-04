@@ -14,6 +14,31 @@ class LLMClient:
         self.gemini_key = os.getenv("GEMINI_API_KEY")
         self.groq_key = os.getenv("GROQ_API_KEY")
         self.providers = []
+        
+        # PRIORITIZE GROQ TO AVOID GEMINI RATE LIMITS
+        if self.groq_key:
+            groq_url = "https://api.groq.com/openai/v1/chat/completions"
+            groq_headers = {"Authorization": f"Bearer {self.groq_key}", "Content-Type": "application/json"}
+            
+            self.providers.append({
+                "name": "Groq Qwen 3.8 27B",
+                "url": groq_url,
+                "headers": groq_headers,
+                "model": "qwen/qwen3.8-27b"
+            })
+            self.providers.append({
+                "name": "Groq GPT OSS 120B",
+                "url": groq_url,
+                "headers": groq_headers,
+                "model": "openai/gpt-oss-120b"
+            })
+            self.providers.append({
+                "name": "Groq GPT OSS 20B",
+                "url": groq_url,
+                "headers": groq_headers,
+                "model": "openai/gpt-oss-20b"
+            })
+
         if self.gemini_key:
             self.providers.append({
                 "name": "Gemini 3.5 Flash Lite",
@@ -26,35 +51,6 @@ class LLMClient:
                 "url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
                 "headers": {"Authorization": f"Bearer {self.gemini_key}", "Content-Type": "application/json"},
                 "model": "gemini-3.1-flash-lite"
-            })
-            self.providers.append({
-                "name": "Gemini 3.8 Flash",
-                "url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-                "headers": {"Authorization": f"Bearer {self.gemini_key}", "Content-Type": "application/json"},
-                "model": "gemini-3.8-flash"
-            })
-
-        if self.groq_key:
-            groq_url = "https://api.groq.com/openai/v1/chat/completions"
-            groq_headers = {"Authorization": f"Bearer {self.groq_key}", "Content-Type": "application/json"}
-            
-            self.providers.append({
-                "name": "Groq GPT OSS 120B",
-                "url": groq_url,
-                "headers": groq_headers,
-                "model": "openai/gpt-oss-120b"
-            })
-            self.providers.append({
-                "name": "Groq Qwen 3.8 27B",
-                "url": groq_url,
-                "headers": groq_headers,
-                "model": "qwen/qwen3.8-27b"
-            })
-            self.providers.append({
-                "name": "Groq GPT OSS 20B",
-                "url": groq_url,
-                "headers": groq_headers,
-                "model": "openai/gpt-oss-20b"
             })
             
         if not self.providers:
@@ -111,7 +107,7 @@ class LLMClient:
                     if resp.status_code == 429:
                         if attempt < max_retries - 1:
                             console.print(f"[dim]Rate limit (429) hit on {provider['name']}. Sleeping 10s...[/dim]")
-                            time.sleep(10)
+                            time.sleep(1)
                             continue
                         else:
                             console.print(f"[yellow]Rate limit exhausted on {provider['name']}.[/yellow]")
