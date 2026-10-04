@@ -31,9 +31,9 @@ def run_scenario(scenario: dict, prompt_version: str, llm_client: LLMClient):
         if "escalated" in agent_reply.lower() or "human" in agent_reply.lower() or "bye" in agent_reply.lower():
             break
         turns += 1
-        time.sleep(4.5)  # Pace to ~13 Requests Per Minute to stay under 15 RPM limit
+        time.sleep(8)  # Pace to stay under 15 RPM limit
         msg = patient.respond(agent_reply, turns)
-        time.sleep(4.5)  # Pace agent reply as well
+        time.sleep(8)  # Pace agent reply as well
         
     transcript = agent.get_transcript()
     return transcript, db
