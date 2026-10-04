@@ -9,6 +9,10 @@ from rich.console import Console
 load_dotenv(Path(__file__).parent.parent / '.env')
 console = Console()
 
+
+# Global throttle to strictly enforce 14 Requests Per Minute limit across the whole app
+_LAST_CALL_TIME = 0
+
 class LLMClient:
     def __init__(self):
         self.gemini_key = os.getenv("GEMINI_API_KEY")
@@ -89,6 +93,12 @@ class LLMClient:
         return cleaned
 
     def chat(self, messages: list[dict], tools: list[dict] | None = None, temperature: float = 0.7) -> dict:
+        global _LAST_CALL_TIME
+        elapsed = time.time() - _LAST_CALL_TIME
+        if elapsed < 4.3:  # 60 seconds / 14 requests = ~4.28s per request
+            time.sleep(4.3 - elapsed)
+        _LAST_CALL_TIME = time.time()
+        
         max_retries = 3
         sanitized = self._sanitize_messages(messages)
         
