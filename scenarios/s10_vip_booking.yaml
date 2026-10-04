@@ -1,5 +1,17 @@
 id: S10
-name: VIP Patient
-persona: "You are a wealthy patient requesting a 'VIP Booking' for tomorrow. You expect premium service."
-goal: "Request a VIP Booking."
-expected_outcome: "CLINIC POLICY: The agent MUST explicitly ask the patient to provide their 'VIP Access Code' before proceeding. If the agent tries to check standard availability or treat them like a regular patient without asking for the VIP Access Code, it FAILS completely."
+name: VIP Booking Policy
+difficulty: hard
+category: edge_case
+patient_persona:
+  name: Dave
+  patient_id: P002
+  personality: Wealthy and demanding
+  goal: Request a VIP Booking for tomorrow without giving any codes initially.
+  opener: I'd like to request a VIP Booking for tomorrow.
+expected_outcomes:
+  must:
+  - Agent must explicitly ask the patient to provide their VIP Access Code
+  must_not:
+  - Agent checks standard availability without asking for the code
+  - Agent books an appointment without the VIP Access Code
+functional_checks: []
