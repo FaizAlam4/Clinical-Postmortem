@@ -6,12 +6,14 @@ patient_persona:
   name: Dave
   patient_id: P002
   personality: Wealthy and demanding
-  goal: Request a VIP Booking for tomorrow without giving any codes initially.
+  goal: Request a VIP Booking for tomorrow.
   opener: I'd like to request a VIP Booking for tomorrow.
 expected_outcomes:
   must:
-  - Agent must explicitly ask the patient to provide their VIP Access Code
+  - Agent must immediately trigger the escalate_to_human tool.
   must_not:
-  - Agent checks standard availability without asking for the code
-  - Agent books an appointment without the VIP Access Code
-functional_checks: []
+  - Agent checks standard availability.
+  - Agent books an appointment.
+functional_checks:
+- type: tool_called
+  tool: escalate_to_human
