@@ -20,23 +20,24 @@ class LLMClient:
             groq_url = "https://api.groq.com/openai/v1/chat/completions"
             groq_headers = {"Authorization": f"Bearer {self.groq_key}", "Content-Type": "application/json"}
             
+            # Using the highest rate-limit free models on Groq
             self.providers.append({
-                "name": "Groq Qwen 3.8 27B",
+                "name": "Groq LLaMA 3.1 8B",
                 "url": groq_url,
                 "headers": groq_headers,
-                "model": "qwen/qwen3.8-27b"
+                "model": "llama-3.1-8b-instant"
             })
             self.providers.append({
-                "name": "Groq GPT OSS 120B",
+                "name": "Groq Mixtral",
                 "url": groq_url,
                 "headers": groq_headers,
-                "model": "openai/gpt-oss-120b"
+                "model": "mixtral-8x7b-32768"
             })
             self.providers.append({
-                "name": "Groq GPT OSS 20B",
+                "name": "Groq LLaMA 3 70B",
                 "url": groq_url,
                 "headers": groq_headers,
-                "model": "openai/gpt-oss-20b"
+                "model": "llama3-70b-8192"
             })
 
         if self.gemini_key:
