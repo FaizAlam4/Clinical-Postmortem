@@ -35,6 +35,27 @@ class LLMClient:
         if not self.providers:
             raise ValueError("No API keys found")
 
+    def _sanitize_messages(self, messages: list[dict]) -> list[dict]:
+        if not messages:
+            return messages
+        cleaned = [messages[0]]
+        for msg in messages[1:]:
+            role = msg.get("role")
+            if role == "tool":
+                cleaned.append(msg)
+                continue
+            prev = cleaned[-1]
+            if prev.get("role") == role and role in ("user", "assistant"):
+                prev_content = prev.get("content") or ""
+                new_content = msg.get("content") or ""
+                if prev_content and new_content:
+                    prev["content"] = prev_content + "\n" + new_content
+                elif new_content:
+                    prev["content"] = new_content
+            else:
+                cleaned.append(msg)
+        return cleaned
+
     def chat(self, messages: list[dict], tools: list[dict] | None = None, temperature: float = 0.7) -> dict:
         global _LAST_CALL_TIME
         elapsed = time.time() - _LAST_CALL_TIME
